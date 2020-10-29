@@ -10,7 +10,7 @@ pipeline {
         echo 'pushing image to dockerhub'
       }
     }
-    stage('deploy') {
+    stage('push to repo') {
       steps {
         echo 'Loggin in to dockerhub'
         withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'dockerhubPassword'), string(credentialsId: 'dockerhub-username', variable: 'dockerhubUsername')]) {
@@ -20,6 +20,15 @@ pipeline {
         echo 'Pushing image to dockerhub'
         sh 'docker push itspotorg/nginx-test:latest'
       }
+    }
+
+    stage('deploy') {
+      echo 'deploying to target'
+    }
+
+    stage('cleanup') {
+      echo 'cleaning up ...'
+      sh 'docker image rm itspotorg/nginx-test:latest'
     }
 
   }
