@@ -18,7 +18,7 @@ pipeline {
         }
         
         echo 'Pushing image to dockerhub'
-        sh 'docker push itspotorg/nginx-test:lates'
+        sh 'docker push itspotorg/nginx-test:latest'
       }
     }
 
