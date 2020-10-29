@@ -13,12 +13,12 @@ pipeline {
     stage('deploy') {
       steps {
         echo 'Loggin in to dockerhub'
-        withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'dockerhubPassword')]) {
-          sh 'docker login -u sweptwings -p ${dockerhubPassword}'
-        }
         withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'dockerhubPassword'), string(credentialsId: 'dockerhub-username', variable: 'dockerhubUsername')]) {
           sh 'docker login -u ${dockerhubUsername} -p ${dockerhubPassword}'
         }
+        
+        echo 'Pushing image to dockerhub'
+        sh 'docker push itspotorg/nginx-test:latest'
       }
     }
 
