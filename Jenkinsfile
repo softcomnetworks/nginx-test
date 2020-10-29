@@ -12,7 +12,10 @@ pipeline {
     }
     stage('deploy') {
       steps {
-        echo 'deploying to target'
+        echo 'Loggin in to dockerhub'
+          withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'docker-pass'), string(credentialsId: 'dockerhub-pass', variable: 'docker-username')]) {
+            sh 'docker login -u ${docker-username} -p ${docker-pass}'    
+          }
       }
     }
 
