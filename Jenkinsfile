@@ -16,6 +16,9 @@ pipeline {
         withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'dockerhubPassword')]) {
           sh 'docker login -u sweptwings -p ${dockerhubPassword}'
         }
+        withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'dockerhubPassword'), string(credentialsId: 'dockerhub-username', variable: 'dockerhubUsername')]) {
+          sh 'docker login -u ${dockerhubUsername} -p ${dockerhubPassword}'
+        }
       }
     }
 
