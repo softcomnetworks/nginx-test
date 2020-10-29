@@ -16,20 +16,20 @@ pipeline {
         withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'dockerhubPassword'), string(credentialsId: 'dockerhub-username', variable: 'dockerhubUsername')]) {
           sh 'docker login -u ${dockerhubUsername} -p ${dockerhubPassword}'
         }
-        
         echo 'Pushing image to dockerhub'
         sh 'docker push itspotorg/nginx-test:latest'
       }
     }
-
     stage('deploy') {
-      echo 'deploying to target'
+      steps {
+        echo 'deploying to target'
+      }
     }
-
     stage('cleanup') {
-      echo 'cleaning up ...'
-      sh 'docker image rm itspotorg/nginx-test:latest'
+      steps {
+        echo 'cleaning up ...'
+        sh 'docker image rm itspotorg/nginx-test:latest'
+      }
     }
-
   }
 }
