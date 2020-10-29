@@ -3,13 +3,12 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sleep 2
+        echo 'building docker image'
       }
     }
-
     stage('deploy') {
       steps {
-        echo 'Deployed'
+        echo 'deploying to target'
       }
     }
 
