@@ -5,7 +5,7 @@ pipeline {
       steps {
         echo 'building docker image'
         script {
-          docker.build "itspotorg/nginx-test:latest"
+          sh 'docker build -t itspotorg/nginx-test:${BUILD_NUMBER} .'
         }
         echo 'pushing image to dockerhub'
       }
@@ -18,7 +18,7 @@ pipeline {
         }
         
         echo 'Pushing image to dockerhub'
-        sh 'docker push itspotorg/nginx-test:latest'
+        sh 'docker push itspotorg/nginx-test:${BUILD_NUMBER}'
       }
     }
 
