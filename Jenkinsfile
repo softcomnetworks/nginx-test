@@ -32,6 +32,11 @@ pipeline {
     stage('cleanup') {
       steps {
         echo 'cleaning up ...'
+        echo 'removing remote dangling images'
+        sshagent(['nginx-test-prod']) {
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker rmi -f $(docker images -f 'dangling=true' -q)"
+        }
+        echo 'removing local build image'
         sh 'docker image rm itspotorg/nginx-test:latest'
       }
     }
