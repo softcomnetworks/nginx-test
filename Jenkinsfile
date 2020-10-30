@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     deleteContainer = "docker rm nginx-test-prod"
-    deployContainer = "docker pull itspotorg/nginx-test:latest && docker run -p 80:80 --name nginx-test-prod itspotorg/nginx-test:latest"
+    deployContainer = "docker pull itspotorg/nginx-test:latest && docker run -d -p 80:80 --name nginx-test-prod itspotorg/nginx-test:latest"
   }
   stages {
     stage('build') {
