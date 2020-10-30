@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    deployCommand = "touch ~/i-work.txt"
+    deployCommand = "touch i-work.txt"
   }
   stages {
     stage('build') {
