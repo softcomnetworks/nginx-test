@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  environment {
+    deployCommand = "touch ~/i-work.txt"
+  }
   stages {
     stage('build') {
       steps {
@@ -21,9 +24,7 @@ pipeline {
     }
     stage('deploy') {
       steps {
-        def deployCommand = 'touch ~/i-work.txt'
         echo 'starting deployment'
-        echo 'constructig deploy command'
         echo 'Executing command on remote'
         sshagent(['nginx-test-prod']) {
           sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deployCommand}"
