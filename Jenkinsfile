@@ -1,8 +1,9 @@
 pipeline {
   agent any
   environment {
-    deleteContainer = "docker rm nginx-test-prod"
-    deployContainer = "docker rm --force nginx-test-prod && docker pull itspotorg/nginx-test:latest && docker run -d -p 80:80 --name nginx-test-prod itspotorg/nginx-test:latest"
+    deleteContainer = "docker rm --force nginx-test-prod"
+    pullImage = "docker pull itspotorg/nginx-test:latest"
+    deployContainer = "docker run -d -p 80:80 --name nginx-test-prod itspotorg/nginx-test:latest"
   }
   stages {
     stage('build') {
@@ -27,7 +28,8 @@ pipeline {
       steps {
         echo 'starting deployment'
         sshagent(['nginx-test-prod']) {
-          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deployContainer}"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deleteContainer}"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${pullImage}"
         }
       }
     }
