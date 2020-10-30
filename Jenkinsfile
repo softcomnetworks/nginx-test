@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  environment {
+    deleteContainer = "docker rm nginx-test-prod"
+  }
   stages {
     stage('build') {
       steps {
@@ -22,9 +25,6 @@ pipeline {
     stage('deploy') {
       steps {
         echo 'starting deployment'
-        environment {
-          deleteContainer = "docker rm nginx-test-prod"
-        }
         sshagent(['nginx-test-prod']) {
           sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deleteContainer}"
         }
