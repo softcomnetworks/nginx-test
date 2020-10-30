@@ -21,12 +21,12 @@ pipeline {
     }
     stage('deploy') {
       steps {
+        def deployCommand = 'touch ~/i-work.txt'
         echo 'starting deployment'
         echo 'constructig deploy command'
-        def deployCommand = 'touch ~/i-work.txt'
         echo 'Executing command on remote'
         sshagent(['nginx-test-prod']) {
-          sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deployCommand}'
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deployCommand}"
         }
       }
     }
