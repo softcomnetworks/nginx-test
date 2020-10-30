@@ -1,10 +1,5 @@
 pipeline {
   agent any
-  environment {
-    deleteContainer = "docker rm --force nginx-test-prod && docker ps -a"
-    pullImage = "docker pull itspotorg/nginx-test:latest"
-    deployContainer = "docker ps -a && docker run -d -p 80:80 --name nginx-test-prod itspotorg/nginx-test:latest && docker ps -a"
-  }
   stages {
     stage('build') {
       steps {
@@ -28,9 +23,11 @@ pipeline {
       steps {
         echo 'starting deployment'
         sshagent(['nginx-test-prod']) {
-          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker ps"
-          // sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${pullImage}"
-          // sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deployContainer}"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker ps -a"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker images"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker rm --force nginx-test-app"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker pull itspotorg/nginx-test:latest"
+          sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com docker run -d -p 80:80 --name nginx-test-app itspotorg/nginx-test:latest"
         }
       }
     }
