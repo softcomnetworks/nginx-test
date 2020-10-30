@@ -26,7 +26,6 @@ pipeline {
           deleteContainer = "docker rm nginx-test-prod"
         }
         sshagent(['nginx-test-prod']) {
-          echo 'stopping and removing running container'
           sh "ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-130-53-186.eu-west-2.compute.amazonaws.com ${deleteContainer}"
         }
       }
